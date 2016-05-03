@@ -1,0 +1,13 @@
+{
+    "name": "leoo/user-bundle",
+    "description": "bundle user",
+    "type": "symfony-bundle",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Bablon Arnaud",
+            "email": "arnaud.bablon@leoo.fr"
+        }
+    ],
+    "minimum-stability": "dev"
+}

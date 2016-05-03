@@ -1,0 +1,15 @@
+Leoo\UserBundle\Entity\User:
+    type: entity
+    table: null
+    repositoryClass: Leoo\UserBundle\Repository\UserRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        name:
+            type: string
+            length: 255
+    lifecycleCallbacks: {  }
