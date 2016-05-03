@@ -1,5 +1,5 @@
 leoo_user_user:
-    resource: "@LeooUserBundle/Resources/config/routing/user.yml"
+    resource: "routing/user.yml"
     prefix:   /user
 
 leoo_user_homepage:
