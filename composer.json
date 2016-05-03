@@ -9,5 +9,8 @@
             "email": "arnaud.bablon@leoo.fr"
         }
     ],
+    "autoload": {
+        "psr-4": { "Leoo\\UserBundle\\": "" }
+    },
     "minimum-stability": "dev"
 }
