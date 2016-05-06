@@ -1,0 +1,26 @@
+pugx_multi_user:
+    users:
+        user_one:
+            entity:
+                class: Leoo\UserBundle\Entity\UserOne
+            registration:
+                form:
+                    type: Leoo\UserBundle\Form\Type\RegistrationUserOneFormType
+                    name: fos_user_registration_form
+                    validation_groups:  [Registration, Default]
+                template: LeooUserBundle:Registration:user_one.form.html.twig
+            profile:
+                form:
+                    type: Leoo\UserBundle\Form\Type\ProfileUserOneFormType
+                    name: fos_user_profile_form
+                    validation_groups:  [Profile, Default]
+        user_two:
+            entity:
+                class: Leoo\UserBundle\Entity\UserTwo
+            registration:
+                form:
+                    type: Leoo\UserBundle\Form\Type\RegistrationUserTwoFormType
+                template: LeooUserBundle:Registration:user_two.form.html.twig
+            profile:
+                form:
+                    type: Leoo\UserBundle\Form\Type\ProfileUserTwoFormType
