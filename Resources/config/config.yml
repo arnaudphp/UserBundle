@@ -1,0 +1,3 @@
+imports:
+    - { resource: pugx/config.yml }
+    - { resource: friendsofsymfony/fos_user.yml }
