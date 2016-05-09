@@ -1,4 +1,8 @@
 services:
-#    leoo_user.example:
-#        class: Leoo\UserBundle\Example
-#        arguments: ["@service_id", "plain_value", %parameter%]
+
+    sync_user_magellan:
+        class: Leoo\UserBundle\Services\Magellan\SyncUser
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        tags:
+            - { name: leoo.userbundle.updated }

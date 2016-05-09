@@ -2,6 +2,7 @@
 
 namespace Leoo\UserBundle\Controller;
 
+use Leoo\UserBundle\Entity\UserOne;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -12,7 +13,7 @@ use Leoo\UserBundle\Form\UserType;
  * User controller.
  *
  */
-class UserController extends Controller
+class AdminController extends Controller
 {
     /**
      * Lists all User entities.
@@ -20,6 +21,52 @@ class UserController extends Controller
      */
     public function indexAction()
     {
+
+        $user = $this->getUser();
+
+            dump($user);
+/*
+
+        $discriminator = $this->container->get('pugx_user.manager.user_discriminator');
+        $discriminator->setClass('Leoo\UserBundle\Entity\UserOne');
+
+        $userManager = $this->container->get('pugx_user_manager');
+
+        $userOne = $userManager->createUser();
+
+        $userOne->setUsername('addddeemdidn2');
+        $userOne->setEmail('addedddemdin2@mail.com');
+        $userOne->setPlainPassword('123456');
+        $userOne->setEnabled(true);
+        $userOne->setIdentifier(24);
+        $userOne->setUsernamedd('damienlasserre');
+
+        $userManager->updateUser($userOne, true);
+        dump($userOne);
+
+
+
+
+        $discriminator = $this->container->get('pugx_user.manager.user_discriminator');
+        $discriminator->setClass('Leoo\UserBundle\Entity\UserTwo');
+
+        $userManager = $this->container->get('pugx_user_manager');
+
+        $userTwo = $userManager->createUser();
+
+        $userTwo->setUsername('adm"zdidden2');
+        $userTwo->setEmail('addmdidezzn2@mail.com');
+        $userTwo->setPlainPassword('123456');
+        $userTwo->setEnabled(true);
+        $userTwo->setIdentifier(24);
+        $userTwo->setTest('colone de test');
+
+        $userManager->updateUser($userTwo, true);
+        dump($userTwo);
+
+        die('ok');
+
+        */
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('LeooUserBundle:User')->findAll();
@@ -36,11 +83,11 @@ class UserController extends Controller
      */
     public function newAction(Request $request)
     {
-        $user = new User();
-        $form = $this->createForm('Leoo\UserBundle\Form\UserType', $user);
+        $user = new UserOne();
+        $form = $this->createForm(new UserType(), $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
@@ -71,11 +118,15 @@ class UserController extends Controller
     /**
      * Displays a form to edit an existing User entity.
      *
+     * @param Request $request
+     * @param User $user
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, User $user)
     {
         $deleteForm = $this->createDeleteForm($user);
-        $editForm = $this->createForm('Leoo\UserBundle\Form\UserType', $user);
+        $editForm = $this->createForm(new UserType() , $user);
         $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
@@ -96,6 +147,10 @@ class UserController extends Controller
     /**
      * Deletes a User entity.
      *
+     * @param Request $request
+     * @param User $user
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function deleteAction(Request $request, User $user)
     {

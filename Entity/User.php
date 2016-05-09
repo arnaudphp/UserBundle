@@ -3,53 +3,47 @@
 namespace Leoo\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use FOS\UserBundle\Model\User as BaseUser;
 
 /**
- * User
+ * @ORM\Entity
+ * @ORM\Table(name="user")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({"user_one" = "UserOne", "user_two" = "UserTwo"})
+ *
  */
-class User
+abstract class User extends BaseUser
 {
-    /**
-     * @var int
-     */
-    private $id;
+
+    const ROLE_DEFAULT = 'ROLE_USER';
+    const ROLE_ADMIN   = 'ROLE_ADMIN';
 
     /**
-     * @var string
+     * @ORM\Id
+     * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $name;
-
+    protected $id;
 
     /**
-     * Get id
-     *
-     * @return integer 
+     * @ORM\Column(type="integer",nullable=true)
      */
-    public function getId()
+    protected $admin;
+
+    /**
+     * @return mixed
+     */
+    public function getAdmin()
     {
-        return $this->id;
+        return $this->admin;
     }
 
     /**
-     * Set name
-     *
-     * @param string $name
-     * @return User
+     * @param mixed $admin
      */
-    public function setName($name)
+    public function setAdmin($admin)
     {
-        $this->name = $name;
-
-        return $this;
-    }
-
-    /**
-     * Get name
-     *
-     * @return string 
-     */
-    public function getName()
-    {
-        return $this->name;
+        $this->admin = $admin;
     }
 }

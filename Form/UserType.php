@@ -3,12 +3,12 @@
 namespace Leoo\UserBundle\Form;
 
 /** Usages*/
+use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Leoo\UserBundle\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints\NotBlank;
+
 
 /**
  * Class UserType
@@ -22,28 +22,21 @@ class UserType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('name', TextType::class, [
-                'required' => true,
-                'constraints' => [
-                    new NotBlank(),
-                ]]
-            );
-    }
-    
-    /**
-     * @param OptionsResolver $resolver
-     */
-    public function configureOptions(OptionsResolver $resolver)
-    {
-        $resolver->setDefaults(array(
-            'data_class' => User::class
+        $builder->add('roles', ChoiceType::class, array(
+            'choices'  => [
+                User::ROLE_DEFAULT => 'user',
+                User::ROLE_ADMIN => 'admin',
+            ],
+            'required' => true,
+            'multiple' => true,
         ));
     }
 
-    /**
-     * @return null
-     */
+    public function getParent()
+    {
+        return RegistrationFormType::class;
+    }
+
     public function getName()
     {
         return null;

@@ -1,24 +1,24 @@
 user_index:
     path:     /
-    defaults: { _controller: "LeooUserBundle:User:index" }
+    defaults: { _controller: "LeooUserBundle:Admin:index" }
     methods:  GET
 
 user_show:
     path:     /{id}/show
-    defaults: { _controller: "LeooUserBundle:User:show" }
+    defaults: { _controller: "LeooUserBundle:Admin:show" }
     methods:  GET
 
 user_new:
     path:     /new
-    defaults: { _controller: "LeooUserBundle:User:new" }
+    defaults: { _controller: "LeooUserBundle:Admin:new" }
     methods:  [GET, POST]
 
 user_edit:
     path:     /{id}/edit
-    defaults: { _controller: "LeooUserBundle:User:edit" }
+    defaults: { _controller: "LeooUserBundle:Admin:edit" }
     methods:  [GET, POST]
 
 user_delete:
     path:     /{id}/delete
-    defaults: { _controller: "LeooUserBundle:User:delete" }
+    defaults: { _controller: "LeooUserBundle:Admin:delete" }
     methods:  DELETE

@@ -1,7 +1,8 @@
 leoo_user_user:
     resource: "routing/user.yml"
-    prefix:   /user
+    prefix:   /admin
 
 leoo_user_homepage:
     path:     /
     defaults: { _controller: LeooUserBundle:Default:index }
+
