@@ -9,6 +9,8 @@ use Leoo\UserBundle\EventListener\UserCreateEvent;
 use Leoo\UserBundle\EventListener\UserDeleteEvent;
 use Leoo\UserBundle\EventListener\UserEvent;
 use Leoo\UserBundle\EventListener\UserUpdateEvent;
+use Pagerfanta\Adapter\ArrayAdapter;
+use Pagerfanta\Pagerfanta;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -25,15 +27,27 @@ class AdminController extends Controller
      * Lists all User entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        if ($request->query->has('page'))  {
+            $page = $request->query->get('page');
+        } else {
+            $page = 1;
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('LeooUserBundle:User')->findAll();
 
+        $adapter = new ArrayAdapter($users);
+        $pagerfanta = new Pagerfanta($adapter);
+        $pagerfanta->setMaxPerPage(3); // 10 by default
+        $pagerfanta->setCurrentPage($page); // 1 by default
+
 
         return $this->render('LeooUserBundle:User:index.html.twig', array(
             'users' => $users,
+            'my_pager' => $pagerfanta,
         ));
     }
 

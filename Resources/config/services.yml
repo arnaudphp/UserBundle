@@ -24,3 +24,21 @@ services:
         class: Leoo\UserBundle\EventListener\SyncUserListener
         tags:
             - { name: kernel.event_listener, event: leoo.user.disable, method: onUserDisable }
+
+    leoo_user.service:
+        class: 'Leoo\UserBundle\Services\UserService'
+        arguments:
+            - '@translator.default'
+        tags:
+            -  { name: leoo_back.service, enable: true }
+
+    app.menu_builder:
+        class: Leoo\UserBundle\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory", "@leoo_back.services_manager"]
+
+    app.main_menu:
+        class: Knp\Menu\MenuItem
+        factory: ["@app.menu_builder", createMainMenu]
+        arguments: ["@request_stack"]
+        tags:
+            - { name: knp_menu.menu, alias: main }
