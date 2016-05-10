@@ -1,8 +1,26 @@
 services:
 
-    sync_user_magellan:
-        class: Leoo\UserBundle\Services\Magellan\SyncUser
-        arguments:
-            - '@doctrine.orm.entity_manager'
+    sync_user.update:
+        class: Leoo\UserBundle\EventListener\SyncUserListener
         tags:
-            - { name: leoo.userbundle.updated }
+            - { name: kernel.event_listener, event: leoo.user.update, method: onUserUpdate }
+
+    sync_user.create:
+        class: Leoo\UserBundle\EventListener\SyncUserListener
+        tags:
+            - { name: kernel.event_listener, event: leoo.user.create, method: onUserCreate }
+
+    sync_user.delete:
+            class: Leoo\UserBundle\EventListener\SyncUserListener
+            tags:
+                - { name: kernel.event_listener, event: leoo.user.delete, method: onUserDelete }
+
+    sync_user.enable:
+        class: Leoo\UserBundle\EventListener\SyncUserListener
+        tags:
+            - { name: kernel.event_listener, event: leoo.user.enable, method: onUserEnable }
+
+    sync_user.disable:
+        class: Leoo\UserBundle\EventListener\SyncUserListener
+        tags:
+            - { name: kernel.event_listener, event: leoo.user.disable, method: onUserDisable }

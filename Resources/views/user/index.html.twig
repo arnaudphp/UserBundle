@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+
 
 {% block body %}
     <h1>User list Admin</h1>
@@ -26,6 +26,13 @@
                         </li>
                         <li>
                             <a href="{{ path('user_edit', { 'id': user.id }) }}">edit</a>
+                        </li>
+                        <li>
+                            {% if user.enabled == false %}
+                                <a href="{{ path('user_enable', { 'id': user.id }) }}">activer</a>
+                            {% else %}
+                                <a href="{{ path('user_disable', { 'id': user.id }) }}">Désactiver</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </td>

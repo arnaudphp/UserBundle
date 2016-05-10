@@ -3,6 +3,12 @@
 namespace Leoo\UserBundle\Controller;
 
 use Leoo\UserBundle\Entity\UserOne;
+use Leoo\UserBundle\EventListener\SyncUserEvent;
+use Leoo\UserBundle\EventListener\SyncUserListener;
+use Leoo\UserBundle\EventListener\UserCreateEvent;
+use Leoo\UserBundle\EventListener\UserDeleteEvent;
+use Leoo\UserBundle\EventListener\UserEvent;
+use Leoo\UserBundle\EventListener\UserUpdateEvent;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -21,52 +27,6 @@ class AdminController extends Controller
      */
     public function indexAction()
     {
-
-        $user = $this->getUser();
-
-            dump($user);
-/*
-
-        $discriminator = $this->container->get('pugx_user.manager.user_discriminator');
-        $discriminator->setClass('Leoo\UserBundle\Entity\UserOne');
-
-        $userManager = $this->container->get('pugx_user_manager');
-
-        $userOne = $userManager->createUser();
-
-        $userOne->setUsername('addddeemdidn2');
-        $userOne->setEmail('addedddemdin2@mail.com');
-        $userOne->setPlainPassword('123456');
-        $userOne->setEnabled(true);
-        $userOne->setIdentifier(24);
-        $userOne->setUsernamedd('damienlasserre');
-
-        $userManager->updateUser($userOne, true);
-        dump($userOne);
-
-
-
-
-        $discriminator = $this->container->get('pugx_user.manager.user_discriminator');
-        $discriminator->setClass('Leoo\UserBundle\Entity\UserTwo');
-
-        $userManager = $this->container->get('pugx_user_manager');
-
-        $userTwo = $userManager->createUser();
-
-        $userTwo->setUsername('adm"zdidden2');
-        $userTwo->setEmail('addmdidezzn2@mail.com');
-        $userTwo->setPlainPassword('123456');
-        $userTwo->setEnabled(true);
-        $userTwo->setIdentifier(24);
-        $userTwo->setTest('colone de test');
-
-        $userManager->updateUser($userTwo, true);
-        dump($userTwo);
-
-        die('ok');
-
-        */
         $em = $this->getDoctrine()->getManager();
 
         $users = $em->getRepository('LeooUserBundle:User')->findAll();
@@ -91,6 +51,12 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($user);
             $em->flush();
+
+            $event = new UserEvent($user);
+            $this
+                ->get('event_dispatcher')
+                ->dispatch(SyncUserListener::onUserCreate, $event)
+            ;
 
             return $this->redirectToRoute('user_show', array('id' => $user->getId()));
         }
@@ -134,6 +100,12 @@ class AdminController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $event = new UserEvent($user);
+            $this
+                ->get('event_dispatcher')
+                ->dispatch(SyncUserListener::onUserUpdate, $event)
+            ;
+
             return $this->redirectToRoute('user_edit', array('id' => $user->getId()));
         }
 
@@ -161,6 +133,13 @@ class AdminController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->remove($user);
             $em->flush();
+
+            $event = new UserEvent($user);
+            $this
+                ->get('event_dispatcher')
+                ->dispatch(SyncUserListener::onUserDelete, $event)
+            ;
+
         }
 
         return $this->redirectToRoute('user_index');
@@ -180,5 +159,37 @@ class AdminController extends Controller
             ->setMethod('DELETE')
             ->getForm()
         ;
+    }
+
+    public function enableAction(User $user)
+    {
+        $user->setEnabled(true);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $event = new UserEvent($user);
+        $this
+            ->get('event_dispatcher')
+            ->dispatch(SyncUserListener::onUserEnable, $event)
+        ;
+
+        return $this->redirectToRoute('user_index');
+    }
+
+    public function disableAction(User $user)
+    {
+        $user->setEnabled(false);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        $event = new UserEvent($user);
+        $this
+            ->get('event_dispatcher')
+            ->dispatch(SyncUserListener::onUserDisable, $event)
+        ;
+
+        return $this->redirectToRoute('user_index');
     }
 }

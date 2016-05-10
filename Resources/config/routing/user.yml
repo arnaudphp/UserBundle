@@ -22,3 +22,13 @@ user_delete:
     path:     /{id}/delete
     defaults: { _controller: "LeooUserBundle:Admin:delete" }
     methods:  DELETE
+
+user_enable:
+    path:     /{id}/enable
+    defaults: { _controller: "LeooUserBundle:Admin:enable" }
+    methods:  GET
+
+user_disable:
+    path:     /{id}/disable
+    defaults: { _controller: "LeooUserBundle:Admin:disable" }
+    methods:  GET
